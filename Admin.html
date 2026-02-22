@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smooziee – لوحة الأدمن</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #7b2cbf;
+      --primary-light: #9b59b6;
+      --primary-glow: rgba(123,44,191,0.15);
+      --accent: #e91e8c;
+      --bg: #0d0d14;
+      --surface: #13131f;
+      --surface2: #1a1a2e;
+      --border: rgba(123,44,191,0.2);
+      --text: #f0eaf8;
+      --muted: #8a7a9b;
+      --green: #2ecc71;
+      --red: #e74c3c;
+      --green-bg: rgba(46,204,113,0.1);
+      --red-bg: rgba(231,76,60,0.1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      direction: rtl;
+    }
+
+    /* Login */
+    #loginScreen {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg);
+      z-index: 9999;
+      transition: opacity 0.4s;
+    }
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 50px 40px;
+      width: 100%; max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .login-logo { font-size: 42px; margin-bottom: 10px; }
+    .login-box h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+    .login-box p { color: var(--muted); font-size: 14px; margin-bottom: 30px; }
+    .login-box input {
+      width: 100%; padding: 14px 18px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-size: 15px;
+      font-family: 'Tajawal', sans-serif; text-align: center;
+      margin-bottom: 15px; transition: border-color 0.3s;
+      outline: none; letter-spacing: 4px;
+    }
+    .login-box input:focus { border-color: var(--primary); }
+    .login-box input::placeholder { letter-spacing: normal; color: var(--muted); }
+    .login-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      color: white; border: none; border-radius: 12px;
+      font-size: 17px; font-weight: 700; font-family: 'Tajawal', sans-serif;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--primary-glow); }
+    .login-error { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+    /* App */
+    #app { display: none; }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed; right: 0; top: 0; bottom: 0;
+      width: 260px; background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      padding: 30px 20px; gap: 8px;
+      z-index: 100;
+    }
+    .sidebar-logo {
+      text-align: center; padding: 10px 0 25px;
+      border-bottom: 1px solid var(--border); margin-bottom: 15px;
+    }
+    .sidebar-logo span { font-size: 22px; font-weight: 800; color: var(--text); }
+    .sidebar-logo small { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .nav-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px; border-radius: 12px;
+      background: none; border: none; color: var(--muted);
+      font-family: 'Tajawal', sans-serif; font-size: 15px;
+      cursor: pointer; transition: all 0.2s; text-align: right; width: 100%;
+    }
+    .nav-btn:hover { background: var(--primary-glow); color: var(--text); }
+    .nav-btn.active { background: var(--primary-glow); color: var(--primary-light); font-weight: 700; }
+    .sidebar-bottom { margin-top: auto; }
+
+    /* Main */
+    .main { margin-right: 260px; padding: 30px; min-height: 100vh; }
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .page-header h2 { font-size: 26px; font-weight: 800; }
+    .page-header .sub { color: var(--muted); font-size: 14px; margin-top: 3px; }
+
+    /* Stats */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px; margin-bottom: 30px;
+    }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .stat-card .label { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .stat-card .value { font-size: 32px; font-weight: 800; }
+    .stat-card.green .value { color: var(--green); }
+    .stat-card.red .value { color: var(--red); }
+    .stat-card.purple .value { color: var(--primary-light); }
+
+    /* Toggle */
+    .toggle-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 30px; gap: 20px; flex-wrap: wrap;
+    }
+    .toggle-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+    .toggle-info p { color: var(--muted); font-size: 13px; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px; font-size: 13px; font-weight: 700;
+    }
+    .status-badge.open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
+    .status-badge.closed { background: var(--red-bg); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+    .toggle-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn {
+      padding: 10px 22px; border-radius: 10px; border: none;
+      font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
+    .btn-open:hover { background: var(--green); color: white; }
+    .btn-close { background: var(--red-bg); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+    .btn-close:hover { background: var(--red); color: white; }
+
+    /* Table */
+    .table-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
+    }
+    .tab-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 8px 20px; border-radius: 10px; border: 1px solid var(--border);
+      background: none; color: var(--muted); font-family: 'Tajawal', sans-serif;
+      font-size: 14px; cursor: pointer; transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--primary-glow); color: var(--primary-light); border-color: var(--primary); }
+    .search-box {
+      padding: 9px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-family: 'Tajawal', sans-serif;
+      font-size: 14px; outline: none; width: 220px; text-align: right;
+    }
+    .search-box:focus { border-color: var(--primary); }
+    .table-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; overflow: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    thead tr { background: var(--surface2); }
+    th {
+      padding: 14px 16px; text-align: right; font-size: 13px;
+      color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 13px 16px; font-size: 14px;
+      border-bottom: 1px solid rgba(123,44,191,0.07);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--primary-glow); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    }
+    .badge-accepted { background: var(--green-bg); color: var(--green); }
+    .badge-rejected { background: var(--red-bg); color: var(--red); }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+
+    /* Pagination */
+    .pagination { display: flex; gap: 8px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+    .page-btn {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted); font-family: 'Tajawal', sans-serif;
+      cursor: pointer; transition: all 0.2s; font-size: 14px;
+    }
+    .page-btn:hover, .page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+      padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      z-index: 9999; transition: transform 0.35s cubic-bezier(.175,.885,.32,1.275);
+      min-width: 250px; text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: var(--green); color: white; }
+    .toast.error { background: var(--red); color: white; }
+    .toast.info { background: var(--primary); color: white; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-right: 0; padding: 20px 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">🔐</div>
+    <h1>لوحة الأدمن</h1>
+    <p>Smooziee Waitlist Dashboard</p>
+    <input type="password" id="adminPassword" placeholder="كلمة المرور" autocomplete="off" />
+    <button class="login-btn" onclick="doLogin()">دخول</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span>🌸 Smooziee</span>
+      <small>Admin Dashboard</small>
+    </div>
+    <button class="nav-btn active" onclick="showPage('dashboard')" id="nav-dashboard">
+      <span>📊</span> الإحصائيات
+    </button>
+    <button class="nav-btn" onclick="showPage('users')" id="nav-users">
+      <span>👥</span> المستخدمون
+    </button>
+    <button class="nav-btn" onclick="window.location.href='WL.html'" style="color:#e91e8c;">
+  <span>🌸</span> الويتليست
+</button>
+    <div class="sidebar-bottom">
+      <button class="nav-btn" onclick="doLogout()" style="color:var(--red);">
+        <span>🚪</span> خروج
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- Dashboard -->
+    <div id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <h2>📊 الإحصائيات</h2>
+          <div class="sub">نظرة عامة على قائمة الانتظار</div>
+        </div>
+        <button class="btn" style="background:var(--primary-glow);color:var(--primary-light);border:1px solid var(--primary);" onclick="loadAll()">
+          🔄 تحديث
+        </button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card purple">
+          <div class="label">إجمالي التسجيلات</div>
+          <div class="value" id="stat-total">—</div>
+        </div>
+        <div class="stat-card green">
+          <div class="label">مقبولون ✅</div>
+          <div class="value" id="stat-accepted">—</div>
+        </div>
+        <div class="stat-card red">
+          <div class="label">مرفوضون ❌</div>
+          <div class="value" id="stat-rejected">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">نسبة القبول</div>
+          <div class="value" id="stat-rate" style="color:var(--accent);">—</div>
+        </div>
+      </div>
+      <div class="toggle-card">
+        <div class="toggle-info">
+          <h3>حالة قائمة الانتظار</h3>
+          <p>تحكمي في فتح وإغلاق التسجيل للمستخدمين الجدد</p>
+        </div>
+        <div class="toggle-actions">
+          <span class="status-badge closed" id="waitlistStatusBadge">● جاري التحميل</span>
+          <button class="btn btn-open" onclick="setWaitlistStatus(true)">🔓 فتح</button>
+          <button class="btn btn-close" onclick="setWaitlistStatus(false)">🔒 إغلاق</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users -->
+    <div id="page-users" style="display:none;">
+      <div class="page-header">
+        <div>
+          <h2>👥 المستخدمون</h2>
+          <div class="sub">جميع بيانات المسجلين</div>
+        </div>
+        <input class="search-box" type="text" id="searchInput" placeholder="بحث بالإيميل أو الهاتف..." oninput="renderTable()" />
+      </div>
+      <div class="table-header">
+        <div class="tab-group">
+          <button class="tab-btn active" id="tab-all" onclick="switchTab('all')">الكل</button>
+          <button class="tab-btn" id="tab-accepted" onclick="switchTab('accepted')">مقبولون ✅</button>
+          <button class="tab-btn" id="tab-rejected" onclick="switchTab('rejected')">مرفوضون ❌</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الإيميل</th>
+              <th>الهاتف</th>
+              <th>نوع الشعر</th>
+              <th>الفرشة مهمة؟</th>
+              <th>السعر المتوقع</th>
+              <th>الحالة</th>
+              <th>التاريخ</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">⏳ جاري التحميل...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase Compat SDK - يشتغل لوكال بدون مشاكل -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase Config - WaitList Smooziee
+  const firebaseConfig = {
+    apiKey: "AIzaSyDiVI7kJ8mbXbK3doNDTc8hiilkHnJUFSY",
+    authDomain: "waitlist-smooziee.firebaseapp.com",
+    projectId: "waitlist-smooziee",
+    storageBucket: "waitlist-smooziee.firebasestorage.app",
+    messagingSenderId: "362626440005",
+    appId: "1:362626440005:web:720c58b9e60782f6eafc2c",
+    measurementId: "G-LBHJYBXS4M"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // ===== كلمة مرور الأدمن – غيّريها! =====
+  const ADMIN_PASSWORD = "smooziee2025";
+
+  let allUsers = [];
+  let currentTab = 'all';
+  let currentPage = 1;
+  const PER_PAGE = 15;
+
+  // ===== Login =====
+  function doLogin() {
+    const pw = document.getElementById('adminPassword').value;
+    if (pw === ADMIN_PASSWORD) {
+      const screen = document.getElementById('loginScreen');
+      screen.style.opacity = '0';
+      setTimeout(() => {
+        screen.style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        loadAll();
+      }, 400);
+    } else {
+      document.getElementById('loginError').textContent = 'كلمة المرور غلط ❌';
+      document.getElementById('adminPassword').value = '';
+    }
+  }
+
+  document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogout() { location.reload(); }
+
+  // ===== Load Data =====
+  async function loadAll() {
+    try {
+      const [accSnap, rejSnap] = await Promise.all([
+        db.collection("accepted_users").orderBy("submittedAt", "desc").get(),
+        db.collection("rejected_users").orderBy("submittedAt", "desc").get()
+      ]);
+
+      const accepted = accSnap.docs.map(d => ({ id: d.id, ...d.data(), _col: 'accepted' }));
+      const rejected = rejSnap.docs.map(d => ({ id: d.id, ...d.data(), _col: 'rejected' }));
+
+      allUsers = [...accepted, ...rejected].sort((a, b) =>
+        (b.submittedAt?.seconds || 0) - (a.submittedAt?.seconds || 0)
+      );
+
+      const total = accepted.length + rejected.length;
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-accepted').textContent = accepted.length;
+      document.getElementById('stat-rejected').textContent = rejected.length;
+      document.getElementById('stat-rate').textContent = total > 0
+        ? Math.round((accepted.length / total) * 100) + '%' : '—';
+
+      renderTable();
+      loadWaitlistStatus();
+      showToast('تم تحديث البيانات ✅', 'success');
+    } catch (err) {
+      console.error(err);
+      showToast('خطأ في تحميل البيانات ❌', 'error');
+    }
+  }
+
+  // ===== Waitlist Status =====
+  async function loadWaitlistStatus() {
+    try {
+      const snap = await db.collection("settings").doc("waitlist").get();
+      updateStatusBadge(!snap.exists || snap.data().isOpen !== false);
+    } catch (e) { console.error(e); }
+  }
+
+  async function setWaitlistStatus(isOpen) {
+    try {
+      await db.collection("settings").doc("waitlist").set({ isOpen });
+      updateStatusBadge(isOpen);
+      showToast(isOpen ? '✅ تم فتح قائمة الانتظار' : '🔒 تم إغلاق قائمة الانتظار', 'info');
+    } catch (e) {
+      showToast('خطأ في تغيير الحالة ❌', 'error');
+    }
+  }
+
+  function updateStatusBadge(isOpen) {
+    const badge = document.getElementById('waitlistStatusBadge');
+    badge.textContent = isOpen ? '● مفتوحة' : '● مغلقة';
+    badge.className = 'status-badge ' + (isOpen ? 'open' : 'closed');
+  }
+
+  // ===== Table =====
+  function renderTable() {
+    const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+    let data = allUsers;
+
+    if (currentTab === 'accepted') data = data.filter(u => u._col === 'accepted');
+    if (currentTab === 'rejected') data = data.filter(u => u._col === 'rejected');
+    if (search) data = data.filter(u =>
+      (u.email || '').toLowerCase().includes(search) ||
+      (u.phone || '').includes(search)
+    );
+
+    const totalPages = Math.ceil(data.length / PER_PAGE) || 1;
+    currentPage = Math.min(currentPage, totalPages);
+    const slice = data.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
+    const tbody = document.getElementById('tableBody');
+    if (slice.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><div>لا توجد نتائج</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = slice.map((u, i) => `
+        <tr>
+          <td style="color:var(--muted)">${(currentPage - 1) * PER_PAGE + i + 1}</td>
+          <td>${u.email || '—'}</td>
+          <td dir="ltr">${u.phone || '—'}</td>
+          <td>${u.hairType || '—'}</td>
+          <td>${u.brushImportance || '—'}</td>
+          <td>${u.priceGuess || '—'} جنيه</td>
+          <td>
+            <span class="badge ${u._col === 'accepted' ? 'badge-accepted' : 'badge-rejected'}">
+              ${u._col === 'accepted' ? '✅ مقبول' : '❌ مرفوض'}
+            </span>
+          </td>
+          <td style="color:var(--muted);font-size:12px;">${formatDate(u.submittedAt)}</td>
+        </tr>`).join('');
+    }
+
+    const pag = document.getElementById('pagination');
+    pag.innerHTML = '';
+    for (let p = 1; p <= totalPages; p++) {
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (p === currentPage ? ' active' : '');
+      btn.textContent = p;
+      btn.onclick = () => { currentPage = p; renderTable(); };
+      pag.appendChild(btn);
+    }
+  }
+
+  function formatDate(ts) {
+    if (!ts?.seconds) return '—';
+    return new Date(ts.seconds * 1000).toLocaleDateString('ar-EG', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  function showPage(page) {
+    document.getElementById('page-dashboard').style.display = page === 'dashboard' ? 'block' : 'none';
+    document.getElementById('page-users').style.display = page === 'users' ? 'block' : 'none';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('nav-' + page)?.classList.add('active');
+    if (page === 'users') renderTable();
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    currentPage = 1;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab)?.classList.add('active');
+    renderTable();
+  }
+
+  function showToast(msg, type = 'info') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type}`;
+    void t.offsetWidth;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
