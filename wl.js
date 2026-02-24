@@ -138,7 +138,7 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
     <div style="text-align:center;padding:80px 20px;font-family:'Tajawal',sans-serif;">
       <div style="font-size:60px;margin-bottom:20px;">🎉</div>
       <h2 style="color:#7b2cbf;font-size:34px;margin-bottom:15px;font-weight:bold;">
-        مبروك! تم قبولك في قائمة الانتظار ✨
+        مبارك! تم قبولك في قائمة الانتظار ✨
       </h2>
       <p style="font-size:18px;color:#333;margin-bottom:25px;">يمكنك الآن الدخول إلى المتجر</p>
       <a href="https://cmgexhb19043101kn7yp0b1qr.wuiltstore.com/ar/shop"
@@ -155,7 +155,7 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
         شكراً لتسجيلك! 🌸
       </h2>
       <p style="font-size:17px;color:#555;line-height:1.8;">
-        تم استلام بياناتك بنجاح.<br>سيتم التواصل معك قريباً إن شاء الله 💜
+        تم استلام بياناتك بنجاح.<br>
       </p>
     </div>`;
 }
@@ -191,5 +191,6 @@ document.querySelectorAll('input').forEach(input => {
     if (this.id === 'phone') document.getElementById('phoneError').textContent = '';
   });
 });
+
 
 initWaitlistUI();
