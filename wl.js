@@ -14,9 +14,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ============================================================
-// التحقق من حالة الويتليست
-// ============================================================
 async function checkWaitlistStatus() {
   try {
     const snap = await db.collection("settings").doc("waitlist").get();
@@ -28,9 +25,6 @@ async function checkWaitlistStatus() {
   }
 }
 
-// ============================================================
-// لو الويتليست مغلقة اعرض رسالة
-// ============================================================
 async function initWaitlistUI() {
   const isOpen = await checkWaitlistStatus();
   if (!isOpen) {
@@ -50,9 +44,6 @@ async function initWaitlistUI() {
   }
 }
 
-// ============================================================
-// منطق الفورم
-// ============================================================
 document.getElementById('waitlistForm')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   clearErrors();
@@ -62,7 +53,6 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
 
   let isValid = true;
 
-  // الإيميل
   const emailInput = document.getElementById('email');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(emailInput.value.trim())) {
@@ -71,7 +61,6 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
     isValid = false;
   }
 
-  // الهاتف
   const phoneInput = document.getElementById('phone');
   const phoneRegex = /^01[0-2,5]{1}[0-9]{8}$/;
   if (!phoneRegex.test(phoneInput.value.trim())) {
@@ -80,7 +69,6 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
     isValid = false;
   }
 
-  // الراديوهات
   const radioGroups = ['hairType', 'hairCare', 'brushImportance'];
   let allAnswered = true;
   radioGroups.forEach(group => {
@@ -91,7 +79,6 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
   });
   if (!allAnswered) { alert('من فضلك أجيبي على جميع الأسئلة'); return; }
 
-  // السعر
   const priceInput = document.querySelector('input[name="priceGuess"]');
   if (!priceInput?.value?.trim()) {
     priceInput?.classList.add('error');
@@ -100,16 +87,10 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
 
   if (!isValid) return;
 
-  // ============================================================
-  // تقييم الإجابات
-  // ============================================================
   const brushVal = document.querySelector('input[name="brushImportance"]:checked')?.value;
   const priceVal = parseInt(priceInput.value.trim());
   const isAccepted = (brushVal === 'أكيد') && (!isNaN(priceVal) && priceVal > 300);
 
-  // ============================================================
-  // البيانات
-  // ============================================================
   const formData = {
     hairType: document.querySelector('input[name="hairType"]:checked')?.value,
     hairCare: document.querySelector('input[name="hairCare"]:checked')?.value,
@@ -121,9 +102,6 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
     submittedAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
-  // ============================================================
-  // حفظ في Firebase
-  // ============================================================
   try {
     const submitBtn = document.querySelector('.submit-btn');
     submitBtn.disabled = true;
@@ -132,33 +110,39 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
     await db.collection(isAccepted ? 'accepted_users' : 'rejected_users').add(formData);
 
     const formContainer = document.querySelector('.form-container');
+    const waitlistSection = document.getElementById('waitlist-section');
 
- if (isAccepted) {
-  formContainer.innerHTML = `
-    <div style="text-align:center;padding:80px 20px;font-family:'Tajawal',sans-serif;">
-      <div style="font-size:60px;margin-bottom:20px;">🎉</div>
-      <h2 style="color:#7b2cbf;font-size:34px;margin-bottom:15px;font-weight:bold;">
-        مبارك! تم قبولك في قائمة الانتظار ✨
-      </h2>
-      <p style="font-size:18px;color:#333;margin-bottom:25px;">يمكنك الآن الدخول إلى المتجر</p>
-      <a href="https://cmgexhb19043101kn7yp0b1qr.wuiltstore.com/ar/shop"
-         target="_blank"
-         style="display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#9b59b6,#7b2cbf);color:white;text-decoration:none;border-radius:12px;font-size:20px;font-weight:bold;box-shadow:0 4px 15px rgba(123,44,191,0.3);">
-        ادخلي المتجر 🛍️
-      </a>
-    </div>`;
-} else {
-  formContainer.innerHTML = `
-    <div style="text-align:center;padding:80px 20px;font-family:'Tajawal',sans-serif;">
-      <div style="font-size:60px;margin-bottom:20px;">💌</div>
-      <h2 style="color:#7b2cbf;font-size:28px;margin-bottom:15px;font-weight:bold;">
-        شكراً لتسجيلك! 🌸
-      </h2>
-      <p style="font-size:17px;color:#555;line-height:1.8;">
-        تم استلام بياناتك بنجاح.<br>
-      </p>
-    </div>`;
-}
+    if (isAccepted) {
+      formContainer.innerHTML = `
+        <div style="text-align:center;padding:80px 20px;font-family:'Tajawal',sans-serif;">
+          <div style="font-size:60px;margin-bottom:20px;">🎉</div>
+          <h2 style="color:#7b2cbf;font-size:34px;margin-bottom:15px;font-weight:bold;">
+            مبروك! تم قبولك في قائمة الانتظار ✨
+          </h2>
+          <p style="font-size:18px;color:#333;margin-bottom:25px;">يمكنك الآن الدخول إلى المتجر</p>
+          <a href="https://cmgexhb19043101kn7yp0b1qr.wuiltstore.com/ar/shop"
+             target="_blank"
+             style="display:inline-block;padding:15px 40px;background:linear-gradient(135deg,#9b59b6,#7b2cbf);color:white;text-decoration:none;border-radius:12px;font-size:20px;font-weight:bold;box-shadow:0 4px 15px rgba(123,44,191,0.3);">
+            ادخلي المتجر 🛍️
+          </a>
+        </div>`;
+    } else {
+      formContainer.innerHTML = `
+        <div style="text-align:center;padding:80px 20px;font-family:'Tajawal',sans-serif;">
+          <div style="font-size:60px;margin-bottom:20px;">💌</div>
+          <h2 style="color:#7b2cbf;font-size:28px;margin-bottom:15px;font-weight:bold;">
+            شكراً لتسجيلك! 🌸
+          </h2>
+          <p style="font-size:17px;color:#555;line-height:1.8;">
+            تم استلام بياناتك بنجاح.<br>سيتم التواصل معك قريباً إن شاء الله 💜
+          </p>
+        </div>`;
+    }
+
+    // ===== Scroll للنتيجة في نفس المكان =====
+    if (waitlistSection) {
+      waitlistSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
   } catch (error) {
     console.error("Firebase Error:", error);
@@ -171,9 +155,6 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
   }
 });
 
-// ============================================================
-// Helpers
-// ============================================================
 function showError(elementId, message) {
   const el = document.getElementById(elementId);
   if (el) el.textContent = message;
@@ -191,6 +172,5 @@ document.querySelectorAll('input').forEach(input => {
     if (this.id === 'phone') document.getElementById('phoneError').textContent = '';
   });
 });
-
 
 initWaitlistUI();
