@@ -28,23 +28,35 @@
     body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; direction: rtl; }
 
     /* Login */
-    #loginScreen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 9999; transition: opacity 0.4s; }
-    .login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 50px 40px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    #loginScreen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 9999; transition: opacity 0.4s; padding: 20px; }
+    .login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px 30px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
     .login-logo { font-size: 42px; margin-bottom: 10px; }
-    .login-box h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
-    .login-box p { color: var(--muted); font-size: 14px; margin-bottom: 30px; }
-    .login-box input { width: 100%; padding: 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 15px; font-family: 'Tajawal', sans-serif; text-align: center; margin-bottom: 15px; transition: border-color 0.3s; outline: none; letter-spacing: 4px; }
-    .login-box input:focus { border-color: var(--primary); }
-    .login-box input::placeholder { letter-spacing: normal; color: var(--muted); }
-    .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; font-family: 'Tajawal', sans-serif; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--primary-glow); }
+    .login-box h1 { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+    .login-box p { color: var(--muted); font-size: 14px; margin-bottom: 25px; }
+    .pass-input-wrap { position: relative; margin-bottom: 15px; }
+    .pass-input-wrap input { width: 100%; padding: 14px 50px 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 15px; font-family: 'Tajawal', sans-serif; text-align: right; transition: border-color 0.3s; outline: none; letter-spacing: 4px; }
+    .pass-input-wrap input:focus { border-color: var(--primary); }
+    .pass-input-wrap input::placeholder { letter-spacing: normal; color: var(--muted); }
+    .eye-btn { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 18px; padding: 4px; transition: color 0.2s; }
+    .eye-btn:hover { color: var(--primary-light); }
+    .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; font-family: 'Tajawal', sans-serif; cursor: pointer; transition: transform 0.2s; }
+    .login-btn:hover { transform: translateY(-2px); }
     .login-error { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
 
     /* App */
     #app { display: none; }
 
+    /* Mobile Header */
+    .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px; background: var(--surface); border-bottom: 1px solid var(--border); z-index: 200; align-items: center; justify-content: space-between; padding: 0 16px; }
+    .mobile-logo { font-size: 16px; font-weight: 800; }
+    .hamburger { background: none; border: none; color: var(--text); font-size: 22px; cursor: pointer; padding: 8px; }
+
+    /* Overlay */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 150; }
+    .sidebar-overlay.show { display: block; }
+
     /* Sidebar */
-    .sidebar { position: fixed; right: 0; top: 0; bottom: 0; width: 260px; background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: 30px 20px; gap: 8px; z-index: 100; }
+    .sidebar { position: fixed; right: 0; top: 0; bottom: 0; width: 260px; background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: 30px 20px; gap: 8px; z-index: 200; transition: transform 0.3s ease; }
     .sidebar-logo { text-align: center; padding: 10px 0 25px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
     .sidebar-logo span { font-size: 22px; font-weight: 800; color: var(--text); }
     .sidebar-logo small { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
@@ -55,12 +67,12 @@
 
     /* Main */
     .main { margin-right: 260px; padding: 30px; min-height: 100vh; }
-    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
     .page-header h2 { font-size: 26px; font-weight: 800; }
     .page-header .sub { color: var(--muted); font-size: 14px; margin-top: 3px; }
 
     /* Stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-bottom: 30px; }
     .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
     .stat-card .label { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
     .stat-card .value { font-size: 32px; font-weight: 800; }
@@ -69,14 +81,14 @@
     .stat-card.purple .value { color: var(--primary-light); }
 
     /* Toggle */
-    .toggle-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 20px; flex-wrap: wrap; }
-    .toggle-info h3 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+    .toggle-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 15px; flex-wrap: wrap; }
+    .toggle-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
     .toggle-info p { color: var(--muted); font-size: 13px; }
     .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
     .status-badge.open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
     .status-badge.closed { background: var(--red-bg); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
     .toggle-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    .btn { padding: 10px 22px; border-radius: 10px; border: none; font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn { padding: 10px 18px; border-radius: 10px; border: none; font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
     .btn-open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
     .btn-open:hover { background: var(--green); color: white; }
     .btn-close { background: var(--red-bg); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
@@ -85,15 +97,15 @@
     /* Table */
     .table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
     .tab-group { display: flex; gap: 8px; flex-wrap: wrap; }
-    .tab-btn { padding: 8px 20px; border-radius: 10px; border: 1px solid var(--border); background: none; color: var(--muted); font-family: 'Tajawal', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+    .tab-btn { padding: 8px 16px; border-radius: 10px; border: 1px solid var(--border); background: none; color: var(--muted); font-family: 'Tajawal', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s; }
     .tab-btn.active { background: var(--primary-glow); color: var(--primary-light); border-color: var(--primary); }
-    .search-box { padding: 9px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none; width: 220px; text-align: right; }
+    .search-box { padding: 9px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none; width: 100%; max-width: 220px; text-align: right; }
     .search-box:focus { border-color: var(--primary); }
     .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    table { width: 100%; border-collapse: collapse; min-width: 650px; }
     thead tr { background: var(--surface2); }
-    th { padding: 14px 16px; text-align: right; font-size: 13px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap; }
-    td { padding: 13px 16px; font-size: 14px; border-bottom: 1px solid rgba(123,44,191,0.07); vertical-align: middle; }
+    th { padding: 12px 14px; text-align: right; font-size: 13px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid rgba(123,44,191,0.07); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--primary-glow); }
     .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
@@ -103,11 +115,13 @@
     .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
 
     /* Password Form */
-    .pass-form { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 35px; max-width: 450px; }
+    .pass-form { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 30px; max-width: 450px; }
     .pass-field { margin-bottom: 20px; }
     .pass-field label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--muted); }
-    .pass-field input { width: 100%; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none; text-align: right; transition: border-color 0.3s; }
-    .pass-field input:focus { border-color: var(--primary); }
+    .pass-field-wrap { position: relative; }
+    .pass-field-wrap input { width: 100%; padding: 12px 50px 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 14px; outline: none; text-align: right; transition: border-color 0.3s; }
+    .pass-field-wrap input:focus { border-color: var(--primary); }
+    .pass-field-wrap .eye-btn { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); }
     .pass-error { font-size: 13px; margin-bottom: 15px; min-height: 18px; }
     .pass-save-btn { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--primary-light), var(--primary)); color: white; border: none; border-radius: 10px; font-family: 'Tajawal', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
     .pass-save-btn:hover { transform: translateY(-2px); }
@@ -124,9 +138,19 @@
     .toast.error { background: var(--red); color: white; }
     .toast.info { background: var(--primary); color: white; }
 
+    /* Responsive */
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { margin-right: 0; padding: 20px 15px; }
+      .sidebar { transform: translateX(100%); }
+      .sidebar.open { transform: translateX(0); }
+      .mobile-header { display: flex; }
+      .main { margin-right: 0; padding: 80px 15px 30px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .toggle-card { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 400px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .stat-card { padding: 15px; }
+      .stat-card .value { font-size: 26px; }
     }
   </style>
 </head>
@@ -138,7 +162,10 @@
     <div class="login-logo">🔐</div>
     <h1>لوحة الأدمن</h1>
     <p>Smooziee Waitlist Dashboard</p>
-    <input type="password" id="adminPassword" placeholder="كلمة المرور" autocomplete="off" />
+    <div class="pass-input-wrap">
+      <input type="password" id="adminPassword" placeholder="كلمة المرور" autocomplete="off" />
+      <button class="eye-btn" onclick="toggleEye('adminPassword', this)" type="button">👁️</button>
+    </div>
     <button class="login-btn" onclick="doLogin()">دخول</button>
     <div class="login-error" id="loginError"></div>
   </div>
@@ -146,7 +173,18 @@
 
 <!-- App -->
 <div id="app">
-  <aside class="sidebar">
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <span class="mobile-logo">🌸 Smooziee Admin</span>
+    <div style="width:40px;"></div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <span>🌸 Smooziee</span>
       <small>Admin Dashboard</small>
@@ -239,7 +277,7 @@
               <th>الهاتف</th>
               <th>نوع الشعر</th>
               <th>الفرشة مهمة؟</th>
-              <th>السعر المتوقع</th>
+              <th>السعر</th>
               <th>الحالة</th>
               <th>التاريخ</th>
             </tr>
@@ -263,15 +301,24 @@
       <div class="pass-form">
         <div class="pass-field">
           <label>كلمة المرور الحالية</label>
-          <input type="password" id="currentPass" placeholder="ادخلي كلمة المرور الحالية" />
+          <div class="pass-field-wrap">
+            <input type="password" id="currentPass" placeholder="ادخلي كلمة المرور الحالية" />
+            <button class="eye-btn" onclick="toggleEye('currentPass', this)" type="button">👁️</button>
+          </div>
         </div>
         <div class="pass-field">
           <label>كلمة المرور الجديدة</label>
-          <input type="password" id="newPass" placeholder="ادخلي كلمة المرور الجديدة" />
+          <div class="pass-field-wrap">
+            <input type="password" id="newPass" placeholder="ادخلي كلمة المرور الجديدة" />
+            <button class="eye-btn" onclick="toggleEye('newPass', this)" type="button">👁️</button>
+          </div>
         </div>
         <div class="pass-field">
           <label>تأكيد كلمة المرور الجديدة</label>
-          <input type="password" id="confirmPass" placeholder="أعيدي كتابة كلمة المرور الجديدة" />
+          <div class="pass-field-wrap">
+            <input type="password" id="confirmPass" placeholder="أعيدي كتابة كلمة المرور الجديدة" />
+            <button class="eye-btn" onclick="toggleEye('confirmPass', this)" type="button">👁️</button>
+          </div>
         </div>
         <div id="passError" class="pass-error"></div>
         <button class="pass-save-btn" onclick="changePassword()">حفظ كلمة المرور الجديدة 🔒</button>
@@ -300,7 +347,6 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // كلمة المرور - بتتجيب من Firebase لو موجودة
   let ADMIN_PASSWORD = "smooziee2025";
   db.collection("settings").doc("adminPassword").get().then(snap => {
     if (snap.exists && snap.data().password) {
@@ -312,6 +358,28 @@
   let currentTab = 'all';
   let currentPage = 1;
   const PER_PAGE = 15;
+
+  // Eye Toggle
+  function toggleEye(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁️';
+    }
+  }
+
+  // Sidebar Mobile
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  }
 
   // Login
   function doLogin() {
@@ -380,9 +448,7 @@
       await db.collection("settings").doc("waitlist").set({ isOpen });
       updateStatusBadge(isOpen);
       showToast(isOpen ? '✅ تم فتح قائمة الانتظار' : '🔒 تم إغلاق قائمة الانتظار', 'info');
-    } catch (e) {
-      showToast('خطأ في تغيير الحالة ❌', 'error');
-    }
+    } catch (e) { showToast('خطأ في تغيير الحالة ❌', 'error'); }
   }
 
   function updateStatusBadge(isOpen) {
@@ -397,21 +463,11 @@
     const newP = document.getElementById('newPass').value;
     const confirm = document.getElementById('confirmPass').value;
     const errEl = document.getElementById('passError');
-
     errEl.style.color = 'var(--red)';
 
-    if (current !== ADMIN_PASSWORD) {
-      errEl.textContent = 'كلمة المرور الحالية غلط ❌';
-      return;
-    }
-    if (newP.length < 6) {
-      errEl.textContent = 'كلمة المرور الجديدة لازم تكون 6 حروف على الأقل';
-      return;
-    }
-    if (newP !== confirm) {
-      errEl.textContent = 'كلمة المرور الجديدة مش متطابقة ❌';
-      return;
-    }
+    if (current !== ADMIN_PASSWORD) { errEl.textContent = 'كلمة المرور الحالية غلط ❌'; return; }
+    if (newP.length < 6) { errEl.textContent = 'كلمة المرور الجديدة لازم تكون 6 حروف على الأقل'; return; }
+    if (newP !== confirm) { errEl.textContent = 'كلمة المرور الجديدة مش متطابقة ❌'; return; }
 
     try {
       await db.collection("settings").doc("adminPassword").set({ password: newP });
@@ -422,21 +478,17 @@
       document.getElementById('newPass').value = '';
       document.getElementById('confirmPass').value = '';
       setTimeout(() => { errEl.textContent = ''; }, 3000);
-    } catch (e) {
-      showToast('خطأ في الحفظ ❌', 'error');
-    }
+    } catch (e) { showToast('خطأ في الحفظ ❌', 'error'); }
   }
 
   // Table
   function renderTable() {
     const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
     let data = allUsers;
-
     if (currentTab === 'accepted') data = data.filter(u => u._col === 'accepted');
     if (currentTab === 'rejected') data = data.filter(u => u._col === 'rejected');
     if (search) data = data.filter(u =>
-      (u.email || '').toLowerCase().includes(search) ||
-      (u.phone || '').includes(search)
+      (u.email || '').toLowerCase().includes(search) || (u.phone || '').includes(search)
     );
 
     const totalPages = Math.ceil(data.length / PER_PAGE) || 1;
@@ -454,13 +506,9 @@
           <td dir="ltr">${u.phone || '—'}</td>
           <td>${u.hairType || '—'}</td>
           <td>${u.brushImportance || '—'}</td>
-          <td>${u.priceGuess || '—'} جنيه</td>
-          <td>
-            <span class="badge ${u._col === 'accepted' ? 'badge-accepted' : 'badge-rejected'}">
-              ${u._col === 'accepted' ? '✅ مقبول' : '❌ مرفوض'}
-            </span>
-          </td>
-          <td style="color:var(--muted);font-size:12px;">${formatDate(u.submittedAt)}</td>
+          <td>${u.priceGuess || '—'} ج</td>
+          <td><span class="badge ${u._col === 'accepted' ? 'badge-accepted' : 'badge-rejected'}">${u._col === 'accepted' ? '✅ مقبول' : '❌ مرفوض'}</span></td>
+          <td style="color:var(--muted);font-size:11px;">${formatDate(u.submittedAt)}</td>
         </tr>`).join('');
     }
 
@@ -490,11 +538,11 @@
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('nav-' + page)?.classList.add('active');
     if (page === 'users') renderTable();
+    closeSidebar();
   }
 
   function switchTab(tab) {
-    currentTab = tab;
-    currentPage = 1;
+    currentTab = tab; currentPage = 1;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + tab)?.classList.add('active');
     renderTable();
