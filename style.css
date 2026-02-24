@@ -214,7 +214,7 @@ body {
   }
   
   .hero-logo img {
-    width: 80px;
+    width: 130px;
   }
   
   .small-image img {
@@ -266,7 +266,7 @@ body {
   }
   
   .hero-logo img {
-    width: 70px;
+    width: 120px;
   }
   
   .hero-small-images {
@@ -296,7 +296,7 @@ body {
   }
   
   .hero-logo img {
-    width: 60px;
+    width: 110px;
   }
   
   .small-image img {
@@ -316,6 +316,10 @@ body {
   
   .hero-sub-text p {
     font-size: 14px;
+  }
+
+  .hero-logo img {
+    width: 100px;
   }
   
   .small-image img {
