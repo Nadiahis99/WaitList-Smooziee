@@ -13,7 +13,7 @@ body {
   font-family: 'Tajawal', sans-serif;
   direction: rtl;
   overflow-x: hidden;
-    margin: 0;
+  margin: 0;
 }
 /* ================== صفحة Hero ================== */
 .hero-section {
@@ -226,7 +226,6 @@ body {
     gap: 15px;
     align-items: center;
   }
-  /* اللوجو في الكوشة اليمين بدون تداخل */
   .hero-logo {
     top: 10px;
     right: 10px;
@@ -235,15 +234,13 @@ body {
   .hero-logo img {
     width: 100px;
   }
-  /* العنوان في النص بعيد عن اللوجو */
   .hero-top-title {
     top: 15px;
-    font-size: 16px;
+    font-size: 20px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     white-space: nowrap;
-    padding-right: 110px;
   }
   .hero-title {
     font-size: 60px;
@@ -287,8 +284,8 @@ body {
     width: 90px;
   }
   .hero-top-title {
-    font-size: 14px;
-    padding-right: 100px;
+    font-size: 18px;
+    top: 12px;
   }
   .small-image img {
     width: 70px;
@@ -310,8 +307,8 @@ body {
     width: 80px;
   }
   .hero-top-title {
-    font-size: 12px;
-    padding-right: 90px;
+    font-size: 16px;
+    top: 10px;
   }
   .small-image img {
     width: 60px;
@@ -331,12 +328,11 @@ body {
 }
 .top-badge {
   text-align: center;
-    color: #7b2cbf;
-    font-size: 50px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 700;
-    margin-bottom: 50px;
-    font-family: 'Tajawal', sans-serif;
+  color: #7b2cbf;
+  font-size: 50px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  margin-bottom: 50px;
 }
 .split-container {
   display: flex;
@@ -410,7 +406,7 @@ body {
   .section-text { font-size: 15px; }
 }
 .section-imagine {
-   background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+  background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
   position: relative;
   min-height: .2vh;
   display: flex;
@@ -483,10 +479,8 @@ body {
   margin: 0;
   line-height: 1.3;
 }
-.bottom-text { padding-top: 50px; }
-.bottom-text { padding-bottom: 100px; }
+.bottom-text { padding-top: 50px; padding-bottom: 100px; }
 .bottom-text h4 {
-  padding-top: 0;
   font-size: 42px;
   font-weight: 800;
   font-family: 'Tajawal', sans-serif;
@@ -880,4 +874,3 @@ input[type="email"].error { border-color: #e74c3c; }
   .section-gallery { padding: 15px 10px; }
   .gallery-container { grid-auto-rows: 250px; gap: 8px; }
 }
-
