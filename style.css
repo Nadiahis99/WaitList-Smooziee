@@ -880,3 +880,4 @@ input[type="email"].error { border-color: #e74c3c; }
   .section-gallery { padding: 15px 10px; }
   .gallery-container { grid-auto-rows: 250px; gap: 8px; }
 }
+
