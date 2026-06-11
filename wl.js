@@ -83,6 +83,15 @@ document.getElementById('waitlistForm')?.addEventListener('submit', async functi
   if (!priceInput?.value?.trim()) {
     priceInput?.classList.add('error');
     isValid = false;
+  } else {
+    const convertedPrice = convertArabicDigits(priceInput.value.trim());
+    if (!/^[0-9]+$/.test(convertedPrice)) {
+      priceInput.classList.add('error');
+      showError('priceGuessError', 'اكتب أرقام فقط');
+      isValid = false;
+    } else {
+      priceInput.value = convertedPrice;
+    }
   }
 
   if (!isValid) return;
@@ -165,6 +174,11 @@ function clearErrors() {
   document.querySelectorAll('input').forEach(input => input.classList.remove('error'));
 }
 
+const arabicDigitsMap = { '٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9' };
+function convertArabicDigits(str) {
+  return str.replace(/[٠-٩]/g, d => arabicDigitsMap[d]);
+}
+
 document.querySelectorAll('input').forEach(input => {
   input.addEventListener('input', function() {
     this.classList.remove('error');
@@ -172,6 +186,23 @@ document.querySelectorAll('input').forEach(input => {
     if (this.id === 'phone') document.getElementById('phoneError').textContent = '';
   });
 });
+
+// ===== Numeric validation for priceGuess (English & Arabic digits) =====
+const priceGuessInput = document.getElementById('priceGuess');
+if (priceGuessInput) {
+  priceGuessInput.addEventListener('input', function() {
+    const original = this.value;
+    const converted = convertArabicDigits(original);
+    const onlyDigits = converted.replace(/[^0-9]/g, '');
+    if (converted !== onlyDigits) {
+      this.value = onlyDigits;
+      showError('priceGuessError', 'اكتب أرقام فقط');
+    } else {
+      this.value = onlyDigits;
+      document.getElementById('priceGuessError').textContent = '';
+    }
+  });
+}
 
 initWaitlistUI();
 
